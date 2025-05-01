@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Приглашение на юбилей</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Manrope', sans-serif;
+      background: #fffaf6;
+      color: #44332c;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+    .hero {
+  height: 100vh;
+  background: url('https://cdn.media.amplience.net/i/partycity/910109?$large$&fmt=auto&qlt=default') center/cover no-repeat;
+  display: flex; justify-content: center; align-items: center;
+  text-align: center; position: relative; color: white;
+}
+
+
+          .hero::after {
+      content: ""; position: absolute; inset: 0;
+      background: rgba(0, 0, 0, 0.4); z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+    }
+    .hero h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 64px; margin: 0; animation: fadeIn 1.5s ease;
+    }
+    .hero p {
+      font-size: 22px; margin-top: 10px; animation: fadeIn 2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    section {
+      padding: 80px 20px; max-width: 800px;
+      margin: 0 auto; text-align: center;
+    }
+    h2 {
+      font-size: 32px; margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px; line-height: 1.6;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 14px 28px; font-size: 18px;
+      background-color: #b77b57; color: white;
+      border: none; border-radius: 32px;
+      text-decoration: none; transition: all 0.3s ease;
+      cursor: pointer; margin-top: 16px;
+    }
+    .cta-button:active {
+      transform: scale(0.96); background-color: #945f44;
+    }
+    .map-link {
+      display: block; margin-top: 20px;
+      color: #b77b57; text-decoration: underline;
+    }
+    .countdown {
+      font-size: 20px; font-weight: 600;
+      margin-top: 20px; color: #b77b57;
+    }
+    footer {
+      padding: 40px 20px; text-align: center;
+      font-size: 14px; color: #aaa;
+    }
+    input, select, textarea {
+      width: 100%; padding: 10px;
+      border-radius: 8px; border: 1px solid #ccc;
+      margin-top: 6px; margin-bottom: 16px;
+      font-size: 16px;
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 42px; }
+      h2 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Людмиле — 50!</h1>
+      <p>Сердечно приглашаю вас отметить со мной мой юбилей</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>Праздник состоится 8 мая 2025 года в 16:00</h2>
+    <p>Банкетный зал <strong>«Золотой вечер»</strong>, г. Москва, ул. Примерная, 10</p>
+    <div class="countdown" id="countdown">Осталось ... до юбилея</div>
+    <a class="map-link" href="https://yandex.ru/maps" target="_blank">Посмотреть на карте</a>
+  </section>
+
+  <section>
+    <h2>Подтвердите участие</h2>
+    <form id="rsvpForm">
+      <label>
+        Ваше имя:<br>
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        Придёте с кем-то?<br>
+        <select name="plusOne">
+          <option value="Нет">Нет</option>
+          <option value="Да">Да</option>
+          <option value="Возможно">Возможно</option>
+        </select>
+      </label>
+      <label>
+        Комментарий:<br>
+        <textarea name="message" rows="3"></textarea>
+      </label>
+      <button type="submit" class="cta-button">Отправить</button>
+      <div id="formStatus"></div>
+    </form>
+  </section>
+
+  <footer>
+    С нетерпением жду встречи! Ваша Людмила ♥
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Дата события: 8 мая 2025 года, 16:00
+      const countdownEl = document.getElementById("countdown");
+      const eventDate = new Date(2025, 4, 8, 16, 0, 0); // Месяцы с 0, май = 4
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = eventDate - now;
+
+        if (diff <= 0) {
+          countdownEl.textContent = "Юбилей уже состоялся!";
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+
+        countdownEl.textContent = `Осталось ${days} ${getDayWord(days)}, ${hours} ч ${minutes} мин до юбилея`;
+      }
+
+      function getDayWord(n) {
+        if (n % 10 === 1 && n % 100 !== 11) return "день";
+        if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return "дня";
+        return "дней";
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 60000); // обновляем каждую минуту
+
+      // Форма RSVP
+      const form = document.getElementById("rsvpForm");
+      const statusDiv = document.getElementById("formStatus");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const data = {
+          name: form.name.value,
+          plusOne: form.plusOne.value,
+          message: form.message.value
+        };
+
+        fetch("https://script.google.com/macros/s/AKfycbzQ-UXBB9ik53Hvyf_CxaZqyXN5aro4zO1lWP_80cniuD2a73TISWVIKZNMhuS87TfB/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        }).then(() => {
+          statusDiv.textContent = `Спасибо, ${data.name}! До встречи на юбилее!`;
+          statusDiv.style.color = "#4caf50";
+          form.reset();
+        }).catch(() => {
+          statusDiv.textContent = "Не удалось отправить. Попробуйте позже.";
+          statusDiv.style.color = "red";
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
